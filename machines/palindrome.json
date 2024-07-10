@@ -1,8 +1,8 @@
 {
     "name" : "palindrome",
-    "alphabet": [ "0", ".", "1", "n", "y" ],
+    "alphabet": [ "0", "1", ".", "n", "y" ],
     "blank" : ".",
-    "states" : [ "scanright", "eraseone", "subone", "skip", "HALT" ],
+    "states" : [ "scanright", "gotoend0", "gotoend1", "check0", "check1", "rewind", "no", "HALT" ],
     "initial" : "scanright",
     "finals" : [ "HALT" ],
 
@@ -39,6 +39,7 @@
             { "read" : ".", "to_state": "scanright", "write": ".", "action": "RIGHT"}
         ],
         "no": [
-            { "read" : ".", "to_state": "HALT", "write": "n", "action": "RIGHT"}        ]
+            { "read" : ".", "to_state": "HALT", "write": "n", "action": "RIGHT"}
+        ]
     }
 }

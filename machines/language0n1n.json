@@ -1,40 +1,42 @@
 {
-    "name" : "word",
-    "alphabet": [ "1", "0", "."],
+    "name" : "language0n1n",
+    "alphabet": [ "1", "0", ".", "a", "b", "n", "y"],
     "blank" : ".",
-    "states" : [ "scanright", "eraseone", "subone", "skip", "HALT" ],
+    "states" : [ "scanright", "skip", "rewind", "check", "no" ],
     "initial" : "scanright",
     "finals" : [ "HALT" ],
 
     "transitions" : {
 
-        "erasefirst":[
-            { "read" : "1", "to_state": "subone", "write": "=", "action": "LEFT"},
-            { "read" : "-", "to_state": "HALT" , "write": ".", "action": "LEFT"}
-        ],
-
-        "erasesecond":[
-            { "read" : "1", "to_state": "subone", "write": "=", "action": "LEFT"},
-            { "read" : "-", "to_state": "HALT" , "write": ".", "action": "LEFT"}
-        ],
-        
         "scanright": [
-            { "read" : ".", "to_state": "scanright", "write": ".", "action": "RIGHT"},
-            { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
-            { "read" : "-", "to_state": "scanright", "write": "-", "action": "RIGHT"},
-            { "read" : "=", "to_state": "eraseone" , "write": ".", "action": "LEFT" }
-        ],
-        "eraseone": [
-            { "read" : "1", "to_state": "subone", "write": "=", "action": "LEFT"},
-            { "read" : "-", "to_state": "HALT" , "write": ".", "action": "LEFT"}
-        ],
-        "subone": [
-            { "read" : "1", "to_state": "subone", "write": "1", "action": "LEFT"},
-            { "read" : "-", "to_state": "skip" , "write": "-", "action": "LEFT"}
+            { "read" : "1", "to_state": "no", "write": "1", "action": "RIGHT"},
+            { "read" : "0", "to_state": "skip", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "check", "write": "b", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "y", "action": "RIGHT"}
         ],
         "skip": [
-            { "read" : ".", "to_state": "skip" , "write": ".", "action": "LEFT"},
-            { "read" : "1", "to_state": "scanright", "write": ".", "action": "RIGHT"}
+            { "read" : "0", "to_state": "skip", "write": "0", "action": "RIGHT"},
+            { "read" : "b", "to_state": "skip", "write": "b", "action": "RIGHT"},
+            { "read" : "1", "to_state": "rewind", "write": "b", "action": "LEFT"},
+            { "read" : ".", "to_state": "no", "write": ".", "action": "LEFT"}
+        ],
+        "rewind": [
+            { "read" : "0", "to_state": "rewind", "write": "0", "action": "LEFT"},
+            { "read" : "a", "to_state": "scanright", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "rewind", "write": "b", "action": "LEFT"}
+        ],
+        "check": [
+            { "read" : "0", "to_state": "no", "write": "0", "action": "RIGHT"},
+            { "read" : "1", "to_state": "no", "write": "1", "action": "RIGHT"},
+            { "read" : "b", "to_state": "check", "write": "b", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "y", "action": "RIGHT"}
+        ],
+        "no": [
+            { "read" : "1", "to_state": "no", "write": "1", "action": "RIGHT"},
+            { "read" : "0", "to_state": "no", "write": "0", "action": "RIGHT"},
+            { "read" : "a", "to_state": "no", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "no", "write": "b", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "n", "action": "RIGHT"}
         ]
     }
 }

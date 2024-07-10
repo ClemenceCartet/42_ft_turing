@@ -9,7 +9,6 @@
     "transitions" : {
 
         "scanright": [
-            { "read" : ".", "to_state": "scanright", "write": ".", "action": "RIGHT"},
             { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
             { "read" : "+", "to_state": "skip", "write": "1", "action": "RIGHT"}
         ],
@@ -17,24 +16,8 @@
             { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}
         ],
         "skip": [
-            { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
+            { "read" : "1", "to_state": "skip", "write": "1", "action": "RIGHT"},
             { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}
         ]
     }
 }
-// table:
-//   scanright:
-//     ['.','1']: R
-//     '+': {R: check}
-//   check:
-//     '1': {L: addone}
-//     ['.','=']: {L: eraseone}
-//   addone:
-//     '+': {write: '1', R: skip}
-//   eraseone:
-//     '1': {write: '.', R: done}
-//     '+': {write: '.', R: skip}
-//   skip:
-//     ['.','1']: R
-//     '=': {write: '.', L: eraseone}
-//   done:
