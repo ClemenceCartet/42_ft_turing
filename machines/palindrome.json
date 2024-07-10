@@ -1,0 +1,44 @@
+{
+    "name" : "palindrome",
+    "alphabet": [ "0", ".", "1", "n", "y" ],
+    "blank" : ".",
+    "states" : [ "scanright", "eraseone", "subone", "skip", "HALT" ],
+    "initial" : "scanright",
+    "finals" : [ "HALT" ],
+
+    "transitions" : {
+
+        "scanright": [
+            { "read" : "0", "to_state": "gotoend0", "write": ".", "action": "RIGHT"},
+            { "read" : "1", "to_state": "gotoend1", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "y", "action": "RIGHT"}
+        ],
+        "gotoend0": [
+            { "read" : "0", "to_state": "gotoend0", "write": "0", "action": "RIGHT"},
+            { "read" : "1", "to_state": "gotoend0", "write": "1", "action": "RIGHT"},
+            { "read" : ".", "to_state": "check0" , "write": ".", "action": "LEFT"}
+        ],
+        "gotoend1": [
+            { "read" : "0", "to_state": "gotoend1", "write": "0", "action": "RIGHT"},
+            { "read" : "1", "to_state": "gotoend1", "write": "1", "action": "RIGHT"},
+            { "read" : ".", "to_state": "check1" , "write": ".", "action": "LEFT"}
+        ],
+        "check0": [
+            { "read" : "0", "to_state": "rewind", "write": ".", "action": "LEFT"},
+            { "read" : "1", "to_state": "no", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT" , "write": "y", "action": "RIGHT"}
+        ],
+        "check1": [
+            { "read" : "1", "to_state": "rewind", "write": ".", "action": "LEFT"},
+            { "read" : "0", "to_state": "no", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT" , "write": "y", "action": "RIGHT"}
+        ],
+        "rewind": [
+            { "read" : "0", "to_state": "rewind", "write": "0", "action": "LEFT"},
+            { "read" : "1", "to_state": "rewind", "write": "1", "action": "LEFT"},
+            { "read" : ".", "to_state": "scanright", "write": ".", "action": "RIGHT"}
+        ],
+        "no": [
+            { "read" : ".", "to_state": "HALT", "write": "n", "action": "RIGHT"}        ]
+    }
+}

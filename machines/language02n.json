@@ -1,0 +1,20 @@
+{
+    "name" : "unary_sub",
+    "alphabet": [ "0", ".", "y", "n" ],
+    "blank" : ".",
+    "states" : [ "scanright", "check", "HALT"],
+    "initial" : "scanright",
+    "finals" : [ "HALT" ],
+
+    "transitions" : {
+
+        "scanright": [
+            { "read" : "0", "to_state": "check", "write": "0", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "y", "action": "RIGHT"}
+        ],
+        "check": [
+            { "read" : "0", "to_state": "scanright", "write": "0", "action": "RIGHT"},
+            { "read" : ".", "to_state": "HALT", "write": "n", "action": "RIGHT"}
+        ]
+    }
+}
