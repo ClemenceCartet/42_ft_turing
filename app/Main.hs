@@ -39,7 +39,7 @@ main = do
     print states
     print transitions
     print (head transitions)
-    print (proceed band 0 '.' "HALT" transitions finals)
+    proceed band 0 '.' initial transitions finals
     args <- getArgs
     print([mySwitch(read(a)) | a <- args])
     print "end"
