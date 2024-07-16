@@ -1,5 +1,5 @@
 module Main where
-import Tools
+import Turing
 import System.Environment
 
 mySwitch :: Integer -> String
@@ -20,19 +20,19 @@ main = do
     let finals = ["HALT"]
     let transitions = [
                        ("scanright",[
-                                     ('.', "scanright", '.', "RIGHT"),
-                                     ('1', "scanright", '1', "RIGHT"),
-                                     ('-', "scanright", '-', "RIGHT"),
-                                     ('=', "eraseone", '.', "LEFT")]),
+                                     ('.', "scanright", '.', 1),
+                                     ('1', "scanright", '1', (-1)),
+                                     ('-', "scanright", '-', 1),
+                                     ('=', "eraseone", '.', (-1))]),
                        ("eraseone",[
-                                    ('1', "subone", '=', "LEFT"),
-                                    ('-', "HALT", '.', "LEFT")]),
+                                    ('1', "subone", '=', (-1)),
+                                    ('-', "HALT", '.', (-1))]),
                        ("subone",[
-                                  ('1', "subone", '1', "LEFT"),
-                                  ('-', "skip", '-', "LEFT")]),
+                                  ('1', "subone", '1', (-1)),
+                                  ('-', "skip", '-', (-1))]),
                        ("skip",[
-                                ('.', "skip", '.', "LEFT"),
-                                ('1', "scanright", '.', "RIGHT")])
+                                ('.', "skip", '.', (-1)),
+                                ('1', "scanright", '.', 1)])
                       ]
     print (take 20 band)
     print alphabets
