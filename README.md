@@ -22,3 +22,8 @@ To install haskell :
 ## OCaml
 
 https://ocaml.org/docs/
+
+## Nico to do
+
+- sauvegarder chaque etat de la [machine, bande] pour detecter un blocage de type boucle infini
+- detecter quand on est sur la partie infinie de la bande, si la machine est dans le meme etat que l'etape precedente, alors il y a blocage
