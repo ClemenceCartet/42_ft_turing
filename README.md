@@ -9,3 +9,5 @@ Machine de Turing universelle : https://fr.wikipedia.org/wiki/Machine_de_Turing_
 https://github.com/AdonisEnProvence/Turing/blob/master/docs/technical.md#universal-turing-machine-tools utile ?
 
 Time complexity : https://nikhilsardana.github.io/lectures/complexity.pdf, https://www.sciencedirect.com/science/article/pii/S0304397515006623
+
+Haskell : https://www.youtube.com/watch?v=Vgu82wiiZ90&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
