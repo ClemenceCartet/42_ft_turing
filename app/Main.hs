@@ -8,16 +8,16 @@ main :: IO ()
 main = do
     let alphabets = ['1', '.', '+', '-', '=']
     let blank = '.'
-    let band = "111-1+1=" ++ [blank,blank..]
+    let band = "111-11=" ++ [blank,blank..]
     let states = ["scanright", "eraseone", "subone", "skip", "HALT"]
     let initial = "scanright"
     let finals = ["HALT"]
-    let transitionTyped = [TransitionMapping "scanright"
+    let transitions = [TransitionMapping "scanright"
                             [Transition '.' "scanright" '.' 1,
                              Transition '1' "scanright" '1' 1,
                              Transition '-' "scanright" '-' 1,
                              Transition '=' "eraseone" '.' (-1)],
-                           TransitionMapping "erasone"
+                           TransitionMapping "eraseone"
                             [Transition '1' "subone" '=' (-1),
                              Transition '-' "HALT" '.' (-1)],
                            TransitionMapping "subone"
@@ -26,22 +26,6 @@ main = do
                            TransitionMapping "skip"
                             [Transition '.' "skip" '.' (-1),
                              Transition '1' "scanright" '.' 1]]
-    let transitions = [
-                       ("scanright",[
-                                     ('.', "scanright", '.', 1),
-                                     ('1', "scanright", '1', 1),
-                                     ('-', "scanright", '-', 1),
-                                     ('=', "eraseone", '.', (-1))]),
-                       ("eraseone",[
-                                    ('1', "subone", '=', (-1)),
-                                    ('-', "HALT", '.', (-1))]),
-                       ("subone",[
-                                  ('1', "subone", '1', (-1)),
-                                  ('-', "skip", '-', (-1))]),
-                       ("skip",[
-                                ('.', "skip", '.', (-1)),
-                                ('1', "scanright", '.', 1)])
-                      ]
     print (take 20 band)
     print alphabets
     print states
