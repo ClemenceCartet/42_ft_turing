@@ -1,6 +1,6 @@
 module Main where
 import Turing
-import System.Environment
+import System.Environment()
 
 main :: IO ()
 
@@ -32,5 +32,5 @@ main = do
     print states
     print transitions
     print (head transitions)
-    proceed band 0 '.' initial transitions finals
+    proceed band 0 blank initial transitions finals
     print "end"
