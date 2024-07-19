@@ -1,6 +1,11 @@
+module Main where
+
 import System.Environment (getArgs, getProgName)
 import System.IO
 import System.Exit (exitSuccess)
+import Data.Aeson
+
+import Types
 
 
 parseFile :: [String] -> IO ()
@@ -41,7 +46,7 @@ main :: IO ()
 main = do
     args <- getArgs
     checkArgs args
-    let (jsonfile, input) = (args !! 0, args !! 1)
+    -- let (jsonfile, input) = (args !! 0, args !! 1)
 
     --         contents <- readFromFile (head args)
     --         -- putStrLn contents
