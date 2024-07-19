@@ -1,25 +1,23 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import System.Environment (getArgs, getProgName)
 import System.IO
 import System.Exit (exitSuccess)
 import Data.Aeson
+import qualified Data.ByteString.Lazy as BL
 
 import Types
 
+instance FromJSON Config where
+    parseJSON = withObject "Config" $ \v -> Config
+        <$> v .: "name"
+        <*> v .: "alphabet"
 
-parseFile :: [String] -> IO ()
-parseFile config = do
-    if head (head config) == '{'
-        then print "ok"
-        else print "no"
-
-readFromFile :: String -> IO String
-readFromFile filePath = do
-    handle <- openFile filePath ReadMode
-    hGetContents handle
-    -- hClose handle 
-    -- return contents
+getJson :: String -> IO (Maybe Config)
+getJson fileName = do
+    json <- BL.readFile fileName
+    return (decode json)
 
 printHelp :: IO ()
 printHelp = do
@@ -42,15 +40,20 @@ checkArgs args
     | otherwise = putStrLn "Incorrect number of arguments..." >> exitSuccess
     where len = length args
 
+-- createConfig :: String -> Config
+-- createConfig blop = Config blop ["hello"]
+
 main :: IO ()
 main = do
     args <- getArgs
     checkArgs args
-    -- let (jsonfile, input) = (args !! 0, args !! 1)
+    let jsonFile = head args
+        input = args !! 1
+    jsonContent <- getJson jsonFile
+    case jsonContent of
+        Nothing -> putStrLn "Your JSON file is not valid."
+        Just json -> putStrLn show json -- pourquoi json ?!!, et pas Config ?
 
-    --         contents <- readFromFile (head args)
-    --         -- putStrLn contents
-    --         let config = lines contents
-    --         parseFile config
-    --         -- print(length config)
-    --     else putStrLn "You must pass your config file to this program."
+    -- let test = createConfig "Hello"
+    -- print test
+
