@@ -8,7 +8,7 @@ main :: IO ()
 main = do
     let alphabets = ['1', '.', '+', '-', '=']
     let blank = '.'
-    let band = "111-11=" ++ [blank,blank..]
+    let band = "111-1+1=" ++ [blank,blank..]
     let states = ["scanright", "eraseone", "subone", "skip", "HALT"]
     let initial = "scanright"
     let finals = ["HALT"]
