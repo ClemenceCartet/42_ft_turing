@@ -1,4 +1,5 @@
 module Turing where
+import TuringDataTypes
 
 displayableBand :: String -> String
 displayableBand band = take 20 band
@@ -10,7 +11,7 @@ printCurrent band idx state charRead (b, c, d) = do
     putStrLn ("[" ++ fst splitted ++ "<" ++ [head (snd splitted)] ++ ">" ++ (tail (snd splitted)) ++ "]" ++ " (" ++ state ++ ", " ++ [charRead] ++ ") -> (" ++ b ++ ", " ++ [c] ++ ", " ++ d ++ ")")
 
 
-evaluate :: String -> Char -> [(String, [(Char, String, Char, Int)])] -> (Char, String, Char, Int)
+evaluate :: String -> Char -> [TransitionMapping] -> Transition
 evaluate state charRead transitions = do
     let actionsList = head (dropWhile (\(transState, _) -> transState /= state) transitions)
     head (dropWhile (\(a, _, _, _) -> a /= charRead) $ snd actionsList)
@@ -23,7 +24,7 @@ toStringDirection x
     | x == 1 = "RIGHT"
     | otherwise = "LEFT"
 
-proceed :: String -> Int -> Char -> String -> [(String, [(Char, String, Char, Int)])] -> [String] -> IO ()
+proceed :: String -> Int -> Char -> String -> [TransitionMapping] -> [String] -> IO ()
 proceed band idx blank state transitions finals = if state `elem` finals
     then putStrLn ("[" ++ displayableBand band ++ "]")
     else do
