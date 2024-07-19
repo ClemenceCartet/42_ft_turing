@@ -1,9 +1,14 @@
 module Turing where
 import TuringDataTypes
 
-displayableBand :: String -> String
-displayableBand band = take 20 band
--- displayableBand band blank = (takeWhile (/= blank) band) ++ [blank, blank]
+displayableBand :: String -> Char -> Int -> String
+displayableBand band blank idx = if idx == ((length band) - 1) || (last band) /= blank
+    then band ++ [blank, blank]
+    else displayableBand (init band) blank idx
+
+displayableResult :: String -> Char -> String
+displayableResult band blank = if (length band) == 0 || (last band) /= blank then band ++ [blank, blank]
+    else displayableResult (init band) blank
 
 printError :: String -> Int -> String -> (Int, Transition) -> IO ()
 printError band idx state transRes = do
@@ -13,6 +18,7 @@ printError band idx state transRes = do
     else if errNum == 11 then putStrLn "State name occurence more than once"
     else if errNum == 2 then putStrLn "Transition not found for this state"
     else if errNum == 21 then putStrLn "More than one transition found for this step"
+    else if errNum == 3 then putStrLn "Your program is going to the infinite space"
     else putStrLn "Unknown error"
 
 printCurrent :: String -> Int -> String -> Transition -> IO ()
@@ -29,13 +35,16 @@ toStringDirection x
     | x == (-1) = "LEFT"
     | otherwise = "Error"
 
-proceed :: String -> Int -> Char -> String -> [TransitionMapping] -> [String] -> IO ()
-proceed band idx blank state transitions finals = if state `elem` finals
-    then putStrLn ("[" ++ displayableBand band ++ "]")
+proceed :: String -> Int -> Char -> String -> [TransitionMapping] -> [String] -> Int -> IO ()
+proceed band idx blank state transitions finals infiniteIdx = if state `elem` finals
+    then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) blank ++ "]")
     else do
         let transResult = findTransition transitions state (band !! idx)
-        if fst transResult /= 0 then printError (displayableBand band) idx state transResult
+        if fst transResult /= 0 then printError (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state transResult
         else do
             let trans = snd transResult
-            printCurrent (displayableBand band) idx state trans
-            proceed (applyModify band idx $ replaceChar trans) (idx + (nextDir trans)) blank (nextState trans) transitions finals
+            if idx == infiniteIdx && (charRead trans) == blank && (nextState trans) == state && (nextDir trans) == 1
+            then printError (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state (3, trans)
+            else do
+                printCurrent (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state trans
+                proceed (applyModify band idx $ replaceChar trans) (idx + (nextDir trans)) blank (nextState trans) transitions finals (max infiniteIdx (idx + (nextDir trans)))

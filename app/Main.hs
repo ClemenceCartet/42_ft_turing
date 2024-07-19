@@ -8,7 +8,9 @@ main :: IO ()
 main = do
     let alphabets = ['1', '.', '+', '-', '=']
     let blank = '.'
-    let band = "111-1+1=" ++ [blank,blank..]
+    let band = "111-111="
+    let infiniteBand = band ++ [blank, blank..]
+    let infiniteIdx = length band
     let states = ["scanright", "eraseone", "subone", "skip", "HALT"]
     let initial = "scanright"
     let finals = ["HALT"]
@@ -31,5 +33,5 @@ main = do
     print states
     print transitions
     print (head transitions)
-    proceed band 0 blank initial transitions finals
+    proceed infiniteBand 0 blank initial transitions finals infiniteIdx
     print "end"
