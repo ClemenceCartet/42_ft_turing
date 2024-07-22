@@ -8,11 +8,69 @@
         "Y", "Z", ".", "=", "+", "-", " ", ";", ":", "*", "!", "?", "{", "}", "_"
     ],
     "blank": ".",
-    "states": [ "gotoI", "backtoS", ""],
-    "initial": "",
-    "finals": [],
+    "states": [ "gotoI", "gotoS", "takeInit", "memoa", "memob", "memoc", "backtoT", "write1to+", "write.to=", "write.to1", "end" ],
+    "initial": "gotoS",
+    "finals": ["end"],
     "transitions" : {
-        
+        "gotoS": [
+            { "read" : "A", "to_state": "gotoS", "write": "A", "action": "RIGHT"},
+            { "read" : "1", "to_state": "gotoS", "write": "1", "action": "RIGHT"},
+            { "read" : ".", "to_state": "gotoS", "write": ".", "action": "RIGHT"},
+            { "read" : "+", "to_state": "gotoS", "write": "+", "action": "RIGHT"},
+            { "read" : "=", "to_state": "gotoS", "write": "=", "action": "RIGHT"},
+            { "read" : "S", "to_state": "takeInit", "write": "S", "action": "RIGHT"}
+        ],
+        "takeInit": [
+            { "read" : "a", "to_state": "memoa", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "memob", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "memoc", "write": "c", "action": "RIGHT"}
+        ],
+        "memoa": [
+            { "read" : "_", "to_state": "gotoI", "write": "a", "action": "RIGHT"},
+            { "read" : "a", "to_state": "memoa", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "memoa", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "memoa", "write": "c", "action": "RIGHT"},
+            { "read" : "T", "to_state": "memoa", "write": "T", "action": "RIGHT"},
+            { "read" : ";", "to_state": "memoa", "write": ";", "action": "RIGHT"},
+            { "read" : ",", "to_state": "memoa", "write": ",", "action": "RIGHT"},
+            { "read" : "1", "to_state": "memoa", "write": "1", "action": "RIGHT"},
+            { "read" : "+", "to_state": "memoa", "write": "+", "action": "RIGHT"},
+            { "read" : "=", "to_state": "memoa", "write": "=", "action": "RIGHT"},
+            { "read" : ".", "to_state": "memoa", "write": ".", "action": "RIGHT"},
+            { "read" : "R", "to_state": "memoa", "write": "R", "action": "RIGHT"},
+            { "read" : "L", "to_state": "memoa", "write": "L", "action": "RIGHT"}
+        ],
+        "memob": [
+            { "read" : "_", "to_state": "gotoI", "write": "b", "action": "RIGHT"},
+            { "read" : "a", "to_state": "memob", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "memob", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "memob", "write": "c", "action": "RIGHT"},
+            { "read" : "T", "to_state": "memob", "write": "T", "action": "RIGHT"},
+            { "read" : ";", "to_state": "memob", "write": ";", "action": "RIGHT"},
+            { "read" : ",", "to_state": "memob", "write": ",", "action": "RIGHT"},
+            { "read" : "1", "to_state": "memob", "write": "1", "action": "RIGHT"},
+            { "read" : "+", "to_state": "memob", "write": "+", "action": "RIGHT"},
+            { "read" : "=", "to_state": "memob", "write": "=", "action": "RIGHT"},
+            { "read" : ".", "to_state": "memob", "write": ".", "action": "RIGHT"},
+            { "read" : "R", "to_state": "memob", "write": "R", "action": "RIGHT"},
+            { "read" : "L", "to_state": "memob", "write": "L", "action": "RIGHT"}
+        ],
+        "memoc": [
+            { "read" : "_", "to_state": "gotoI", "write": "c", "action": "RIGHT"},
+            { "read" : "a", "to_state": "memoc", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "memoc", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "memoc", "write": "c", "action": "RIGHT"},
+            { "read" : "T", "to_state": "memoc", "write": "T", "action": "RIGHT"},
+            { "read" : ";", "to_state": "memoc", "write": ";", "action": "RIGHT"},
+            { "read" : ",", "to_state": "memoc", "write": ",", "action": "RIGHT"},
+            { "read" : "1", "to_state": "memoc", "write": "1", "action": "RIGHT"},
+            { "read" : "+", "to_state": "memoc", "write": "+", "action": "RIGHT"},
+            { "read" : "=", "to_state": "memoc", "write": "=", "action": "RIGHT"},
+            { "read" : ".", "to_state": "memoc", "write": ".", "action": "RIGHT"},
+            { "read" : "R", "to_state": "memoc", "write": "R", "action": "RIGHT"},
+            { "read" : "L", "to_state": "memoc", "write": "L", "action": "RIGHT"}
+        ],
+        ""
     },
-    "input": "A1.+=SabcTa:1a1R,+a1R,=b.L;b:1c.R{__________}111+11="
+    "input": "A1.+=SabcT;a,1a1R,+a1R,=b.L;b,1c.R__I111+11="
 }
