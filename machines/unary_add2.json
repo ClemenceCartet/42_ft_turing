@@ -8,14 +8,14 @@
 
     "transitions" : [
         {
-            "name": "scanright",
+            "nameT": "scanright",
             "list": [
                 { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
                 { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
                 { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}]
         },
         {
-            "name": "eraseone",
+            "nameT": "eraseone",
             "list": [
                 { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}]
         }

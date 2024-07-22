@@ -8,10 +8,15 @@ import qualified Data.ByteString.Lazy as BL
 
 import Types
 
-getJson :: String -> IO (Maybe Config)
+checkJson :: Value -> Maybe Config
+checkJson content = do
+    where expected = ["name", "alphabet", "blank", "states", ""]
+
+getJson :: String -> IO (Maybe Value)
 getJson fileName = do
     json <- BL.readFile fileName
-    return (decode json)
+    return (decode content)
+-- the Value type, which is an instance of FromJSON, is used to represent an arbitrary JSON AST (abstract syntax tree)
 
 printHelp :: IO ()
 printHelp = do
@@ -36,11 +41,16 @@ checkArgs args
 
 main :: IO ()
 main = do
+    print
     args <- getArgs
     checkArgs args
     let jsonFile = head args
         input = args !! 1
     jsonContent <- getJson jsonFile
     case jsonContent of
-        Nothing -> putStrLn "Your JSON file is not valid."
-        Just json -> print json -- pourquoi json ?!!, et pas Config ?
+        Nothing -> putStrLn "Failed to parse json."
+        Just content -> -- pourquoi json ?!!, et pas Config ?
+            case checkJson content of
+                Nothing -> putStrLn "Your jsonfile is incorrect."
+                Just config -> execute config
+
