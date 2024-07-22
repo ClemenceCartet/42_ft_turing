@@ -9,15 +9,8 @@ import qualified Data.ByteString.Lazy as BL
 
 import Types
 
-instance FromJSON Config where
-    parseJSON = withObject "Config" $ \v -> Config
-        <$> v .: "name"
-        <*> v .: "alphabet"
-
 getJson :: String -> IO (Maybe Config)
-getJson fileName = do
-    json <- BL.readFile fileName
-    return (decode json)
+getJson fileName = BL.readFile fileName >>= decode
 
 printHelp :: IO ()
 printHelp = do
@@ -40,9 +33,6 @@ checkArgs args
     | otherwise = putStrLn "Incorrect number of arguments..." >> exitSuccess
     where len = length args
 
--- createConfig :: String -> Config
--- createConfig blop = Config blop ["hello"]
-
 main :: IO ()
 main = do
     args <- getArgs
@@ -53,7 +43,3 @@ main = do
     case jsonContent of
         Nothing -> putStrLn "Your JSON file is not valid."
         Just json -> putStrLn show json -- pourquoi json ?!!, et pas Config ?
-
-    -- let test = createConfig "Hello"
-    -- print test
-
