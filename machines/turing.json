@@ -69,7 +69,8 @@
             { "read" : ".", "to_state": "memoc", "write": ".", "action": "RIGHT"},
             { "read" : "R", "to_state": "memoc", "write": "R", "action": "RIGHT"},
             { "read" : "L", "to_state": "memoc", "write": "L", "action": "RIGHT"}
-        ]
+        ],
+        ""
     },
     "input": "A1.+=SabcT;a,1a1R,+a1R,=b.L;b,1c.R__I111+11="
 }
