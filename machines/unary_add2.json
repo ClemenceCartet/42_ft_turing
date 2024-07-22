@@ -6,15 +6,18 @@
     "initial" : "scanright",
     "finals" : [ "HALT" ],
 
-    "transitions" : {
-
-        "scanright": [
-            { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
-            { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
-            { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}
-        ],
-        "eraseone": [
-            { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}
-        ]
-    }
+    "transitions" : [
+        {
+            "name": "scanright",
+            "list": [
+                { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
+                { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
+                { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}]
+        },
+        {
+            "name": "eraseone",
+            "list": [
+                { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}]
+        }
+    ]
 }
