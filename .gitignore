@@ -2,3 +2,6 @@
 *.o
 Main
 dist-newstyle/
+*.cabal
+CHANGELOG.*
+Setup.hs
