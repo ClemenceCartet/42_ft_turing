@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import System.Environment (getArgs, getProgName)
@@ -10,7 +9,9 @@ import qualified Data.ByteString.Lazy as BL
 import Types
 
 getJson :: String -> IO (Maybe Config)
-getJson fileName = BL.readFile fileName >>= decode
+getJson fileName = do
+    json <- BL.readFile fileName
+    return (decode json)
 
 printHelp :: IO ()
 printHelp = do
@@ -42,4 +43,4 @@ main = do
     jsonContent <- getJson jsonFile
     case jsonContent of
         Nothing -> putStrLn "Your JSON file is not valid."
-        Just json -> putStrLn show json -- pourquoi json ?!!, et pas Config ?
+        Just json -> print json -- pourquoi json ?!!, et pas Config ?
