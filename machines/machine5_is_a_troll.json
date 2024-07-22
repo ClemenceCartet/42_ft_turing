@@ -1,0 +1,35 @@
+{
+    "name" : "machine5_is_a_troll",
+    "alphabet": [ "1", ".", "+", "=", "I", "a", "b", "c", "T", ";", ",", "R", "L" ],
+    "blank" : ".",
+    "states" : [ "scanright", "eraseone", "ignore", "HALT" ],
+    "initial" : "ignore",
+    "finals" : [ "HALT" ],
+
+    "transitions" : {
+        "scanright": [
+            { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
+            { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
+            { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}
+        ],
+        "eraseone": [
+            { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}
+        ],
+        "ignore": [
+            { "read" : "I", "to_state": "scanright", "write": ".", "action": "RIGHT"},
+            { "read" : "a", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "b", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "c", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "T", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : ";", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : ",", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "1", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "+", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "=", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : ".", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "R", "to_state": "ignore", "write": ".", "action": "RIGHT"},
+            { "read" : "L", "to_state": "ignore", "write": ".", "action": "RIGHT"}
+        ]
+    },
+    "input_exemple": "1.+=abc;a,1a1R,+a1R,=b.L;b,1c.RI111+11="
+}
