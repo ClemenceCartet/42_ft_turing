@@ -7,8 +7,10 @@ executable turing
     main-is:            Main.hs
     hs-source-dirs:     app, src
     other-modules:      Types
-    build-depends:      base >=4.13 && <4.14,
+    build-depends:      base ^>=4.17.2.1,
                         bytestring,
                         aeson, 
-                        containers
+                        containers,
+						unordered-containers,
+						text
     default-language:   Haskell2010

@@ -13,11 +13,11 @@ data Transition = Transition {
   } deriving (Generic, Show)
 instance FromJSON Transition
 
-data TransitionMap = TransitionMap {
-  nameT :: String,
-  list :: [Transition]
-} deriving (Generic, Show)
-instance FromJSON TransitionMap
+-- data TransitionMap = TransitionMap {
+--   nameT :: String,
+--   list :: [Transition]
+-- } deriving (Generic, Show)
+-- instance FromJSON TransitionMap
 
 data Config = Config {
   name        :: String,
@@ -26,7 +26,8 @@ data Config = Config {
   states      :: [String],
   initial     :: String,
   finals      :: [String],
-  -- transitions :: [TransitionMap]
   transitions :: Map String [Transition]
 } deriving (Generic, Show)
 instance FromJSON Config
+-- the LANGUAGE pragma and Generic instance let us write empty FromJSON
+-- instance for which the compiler will generate sensible default implementations.
