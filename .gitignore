@@ -2,3 +2,5 @@
 dist-newstyle
 tests
 *.cabal
+test.hs
+turing.cabal
