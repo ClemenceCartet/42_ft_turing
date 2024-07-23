@@ -6,23 +6,6 @@
     "initial" : "scanright",
     "finals" : [ "HALT" ],
 
-<<<<<<< HEAD
-    "transitions" : [
-        {
-            "nameT": "scanright",
-            "list": [
-                { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
-                { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
-                { "read" : "=", "to_state": "eraseone", "write": ".", "action": "LEFT"}]
-        },
-        {
-            "nameT": "eraseone",
-            "list": [
-                { "read" : "1", "to_state": "HALT", "write": ".", "action": "RIGHT"}]
-        }
-    ]
-}
-=======
     "transitions" : {
         "scanright": [
             { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
@@ -34,4 +17,3 @@
         ]
     }
 }
->>>>>>> d73a7774e3d7fc9bfb77c1010bf370e5dba95a96
