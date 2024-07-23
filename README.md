@@ -10,4 +10,4 @@ https://github.com/AdonisEnProvence/Turing/blob/master/docs/technical.md#univers
 
 Time complexity : https://nikhilsardana.github.io/lectures/complexity.pdf, https://www.sciencedirect.com/science/article/pii/S0304397515006623
 
-Haskell : https://www.youtube.com/watch?v=Vgu82wiiZ90&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV
+Haskell : https://hackage.haskell.org/package/CheatSheet-1.11/src/CheatSheet.pdf, https://www.youtube.com/watch?v=Vgu82wiiZ90&list=PLe7Ei6viL6jGp1Rfu0dil1JH1SHk9bgDV, https://learnyouahaskell.com/chapters, https://downloads.haskell.org/ghc/latest/docs/libraries/, https://hoogle.haskell.org/

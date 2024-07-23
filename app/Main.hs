@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import System.Environment (getArgs, getProgName)
@@ -9,15 +8,15 @@ import qualified Data.ByteString.Lazy as BL
 
 import Types
 
-instance FromJSON Config where
-    parseJSON = withObject "Config" $ \v -> Config
-        <$> v .: "name"
-        <*> v .: "alphabet"
+checkJson :: Value -> Maybe Config
+checkJson content = do
+    where expected = ["name", "alphabet", "blank", "states", ""]
 
-getJson :: String -> IO (Maybe Config)
+getJson :: String -> IO (Maybe Value)
 getJson fileName = do
     json <- BL.readFile fileName
-    return (decode json)
+    return (decode content)
+-- the Value type, which is an instance of FromJSON, is used to represent an arbitrary JSON AST (abstract syntax tree)
 
 printHelp :: IO ()
 printHelp = do
@@ -40,20 +39,18 @@ checkArgs args
     | otherwise = putStrLn "Incorrect number of arguments..." >> exitSuccess
     where len = length args
 
--- createConfig :: String -> Config
--- createConfig blop = Config blop ["hello"]
-
 main :: IO ()
 main = do
+    print
     args <- getArgs
     checkArgs args
     let jsonFile = head args
         input = args !! 1
     jsonContent <- getJson jsonFile
     case jsonContent of
-        Nothing -> putStrLn "Your JSON file is not valid."
-        Just json -> putStrLn show json -- pourquoi json ?!!, et pas Config ?
-
-    -- let test = createConfig "Hello"
-    -- print test
+        Nothing -> putStrLn "Failed to parse json."
+        Just content -> -- pourquoi json ?!!, et pas Config ?
+            case checkJson content of
+                Nothing -> putStrLn "Your jsonfile is incorrect."
+                Just config -> execute config
 
