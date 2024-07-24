@@ -23,6 +23,7 @@ printError band idx state transRes = do
             | errNum == 2 = "Transition not found for this state."
             | errNum == 21 = "More than one transition found for this step."
             | errNum == 3 = "Your program is going to the infinite space."
+            | errNum == 4 = "Your program goes before the begin of the band."
             | otherwise = "Unknown error."
             where errNum = fst transRes
 
