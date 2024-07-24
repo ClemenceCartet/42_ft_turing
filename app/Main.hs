@@ -4,7 +4,7 @@
 {-# HLINT ignore "Use all" #-}
 module Main where
 
-import Prelude hiding (read)
+import Prelude hiding (read, lookup)
 import System.Environment (getArgs, getProgName)
 import System.IO
 import System.Exit (exitSuccess)
@@ -12,9 +12,21 @@ import Data.Aeson
 import qualified Data.Aeson.KeyMap as KM
 import Data.Aeson.Key (toString)
 import qualified Data.ByteString.Lazy as BL
-import Data.Map (keys, elems)
+import Data.Map (Map, keys, elems, lookup)
 
 import Types
+
+findTransition :: Map String [Transition] -> String -> Char -> (Int, Transition)
+findTransition transMap state c = do
+    case lookup state transMap of
+        Just transitions -> do
+            -- print transitions
+            let transFound = filter (\t -> head (read t) == c) transitions
+            case transFound of
+                [] -> (2, Transition "Err" "Err" "Err" "Err")
+                xs  | length xs > 1 -> (21, Transition "Err" "Err" "Err" "Err")
+                    | otherwise -> (0, head transFound)
+        Nothing -> (1, Transition "Err" "Err" "Err" "Err")
 
 checkConfig :: Config -> IO ()
 checkConfig config = do
@@ -44,11 +56,15 @@ checkConfig config = do
         else putStrLn errorMsg >> exitSuccess
      
 checkInput :: Config -> String -> IO ()
-checkInput config input
-    | null input = putStrLn "Input is empty."
-    | head (blank config) `elem` input = putStrLn "Input shouldn't contain blank char."
-    | not (all (`elem` concat (alphabet config)) input) = putStrLn "Input characters must be in alphabet."
-    | otherwise = print config
+checkInput config input = do
+    let errorMsg
+            | null input = "Input is empty."
+            | head (blank config) `elem` input = "Input shouldn't contain blank char."
+            | not (all (`elem` concat (alphabet config)) input) = "Input characters must be in alphabet."
+            | otherwise = ""
+    if null errorMsg then
+        return ()
+        else putStrLn errorMsg >> exitSuccess
 
 checkJson :: Value -> Maybe Config
 checkJson json@(Object content) = do
@@ -106,4 +122,3 @@ main = do
                 Nothing -> putStrLn "Your jsonfile is uncorrect."
                 Just config ->
                     checkConfig config >> checkInput config input
-                    -- execution
