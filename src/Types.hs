@@ -13,12 +13,6 @@ data Transition = Transition {
   } deriving (Generic, Show)
 instance FromJSON Transition
 
--- data TransitionMap = TransitionMap {
---   nameT :: String,
---   list :: [Transition]
--- } deriving (Generic, Show)
--- instance FromJSON TransitionMap
-
 data Config = Config {
   name        :: String,
   alphabet    :: [String],
