@@ -1,12 +1,13 @@
 {
     "name" : "machine5_is_a_troll",
-    "alphabet": [ "1", ".", "+", "=", "I", "a", "b", "c", "T", ";", ",", "R", "L" ],
-    "blank" : ".",
+    "alphabet": [ "1", ".", "+", "=", "I", "a", "b", "c", "T", ";", ",", "R", "L", " " ],
+    "blank" : " ",
     "states" : [ "scanright", "eraseone", "ignore", "HALT" ],
     "initial" : "ignore",
     "finals" : [ "HALT" ],
 
     "transitions" : {
+
         "scanright": [
             { "read" : "1", "to_state": "scanright", "write": "1", "action": "RIGHT"},
             { "read" : "+", "to_state": "scanright", "write": "1", "action": "RIGHT"},
@@ -30,6 +31,5 @@
             { "read" : "R", "to_state": "ignore", "write": ".", "action": "RIGHT"},
             { "read" : "L", "to_state": "ignore", "write": ".", "action": "RIGHT"}
         ]
-    },
-    "input_exemple": "1.+=abc;a,1a1R,+a1R,=b.L;b,1c.RI111+11="
+    }
 }

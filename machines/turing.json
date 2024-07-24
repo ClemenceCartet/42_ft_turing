@@ -9,7 +9,8 @@
     ],
     "blank": " ",
     "states": [
-        "takeNext", "takeInit", "memoa", "memob",
+        "gotoS", "takeNext", "takeInit",
+        "memoa", "memob", "memoc",
         "memo1", "memo.", "memo=", "memo+",
         "starFor1R", "starFor1L", "starFor.R", "starFor.L",
         "backtoT", "write.to1", "end" ],
