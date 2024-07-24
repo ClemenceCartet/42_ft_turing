@@ -10,7 +10,7 @@
     ],
     "blank": " ",
     "states": [
-        "gotoS", "takeInitState", "takeFirstInput",
+        "gotoS", "takeInitState", "takeFirstInput", "takeFirstInputL",
         "memoaInit",
         "memo1", "memo.", "memo=", "memo+",
         "getCurrentState", "searchTrans_a", "searchTrans_b", "searchTrans_c",
@@ -24,9 +24,9 @@
         "getDir1", "getDir.", "getDir=", "getDir+",
         "starFor1R", "starFor1L", "starFor.R", "starFor.L",
         "starFor=R", "starFor=L", "starFor+R", "starFor+L",
-        "end" ],
+        "end", "errorNegativIdx" ],
     "initial": "gotoS",
-    "finals": ["end"],
+    "finals": ["end", "errorNegativIdx"],
     "transitions" : {
         "gotoS": [
             { "read" : "A", "to_state": "gotoS", "write": "A", "action": "RIGHT"},
@@ -83,6 +83,13 @@
         ],
         "takeFirstInput": [
             { "read" : "_", "to_state": "takeFirstInput", "write": "_", "action": "RIGHT"},
+            { "read" : "1", "to_state": "memo1", "write": "*", "action": "LEFT"},
+            { "read" : ".", "to_state": "memo.", "write": "*", "action": "LEFT"},
+            { "read" : "=", "to_state": "memo=", "write": "*", "action": "LEFT"},
+            { "read" : "+", "to_state": "memo+", "write": "*", "action": "LEFT"}
+        ],
+        "takeFirstInputL": [
+            { "read" : "_", "to_state": "errorNegativIdx", "write": "_", "action": "RIGHT"},
             { "read" : "1", "to_state": "memo1", "write": "*", "action": "LEFT"},
             { "read" : ".", "to_state": "memo.", "write": "*", "action": "LEFT"},
             { "read" : "=", "to_state": "memo=", "write": "*", "action": "LEFT"},
@@ -432,7 +439,7 @@
             { "read" : "_", "to_state": "starFor1R", "write" : "_", "action" : "RIGHT"}
         ],
         "starFor1L": [
-            { "read" : "*", "to_state": "takeFirstInput", "write" : "1", "action" : "LEFT"},
+            { "read" : "*", "to_state": "takeFirstInputL", "write" : "1", "action" : "LEFT"},
             { "read" : "a", "to_state": "starFor1L", "write" : "a", "action" : "RIGHT"},
             { "read" : "b", "to_state": "starFor1L", "write" : "b", "action" : "RIGHT"},
             { "read" : "c", "to_state": "starFor1L", "write" : "c", "action" : "RIGHT"},
@@ -462,7 +469,7 @@
             { "read" : "_", "to_state": "starFor.R", "write" : "_", "action" : "RIGHT"}
         ],
         "starFor.L": [
-            { "read" : "*", "to_state": "takeFirstInput", "write" : ".", "action" : "LEFT"},
+            { "read" : "*", "to_state": "takeFirstInputL", "write" : ".", "action" : "LEFT"},
             { "read" : "a", "to_state": "starFor.L", "write" : "a", "action" : "RIGHT"},
             { "read" : "b", "to_state": "starFor.L", "write" : "b", "action" : "RIGHT"},
             { "read" : "c", "to_state": "starFor.L", "write" : "c", "action" : "RIGHT"},
@@ -491,7 +498,7 @@
             { "read" : "_", "to_state": "starFor+R", "write" : "_", "action" : "RIGHT"}
         ],
         "starFor+L": [
-            { "read" : "*", "to_state": "takeFirstInput", "write" : "+", "action" : "LEFT"},
+            { "read" : "*", "to_state": "takeFirstInputL", "write" : "+", "action" : "LEFT"},
             { "read" : "a", "to_state": "starFor+L", "write" : "a", "action" : "RIGHT"},
             { "read" : "b", "to_state": "starFor+L", "write" : "b", "action" : "RIGHT"},
             { "read" : "c", "to_state": "starFor+L", "write" : "c", "action" : "RIGHT"},
@@ -521,7 +528,7 @@
             { "read" : "_", "to_state": "starFor=R", "write" : "_", "action" : "RIGHT"}
         ],
         "starFor=L": [
-            { "read" : "*", "to_state": "takeFirstInput", "write" : "=", "action" : "LEFT"},
+            { "read" : "*", "to_state": "takeFirstInputL", "write" : "=", "action" : "LEFT"},
             { "read" : "a", "to_state": "starFor=L", "write" : "a", "action" : "RIGHT"},
             { "read" : "b", "to_state": "starFor=L", "write" : "b", "action" : "RIGHT"},
             { "read" : "c", "to_state": "starFor=L", "write" : "c", "action" : "RIGHT"},
