@@ -6,7 +6,7 @@ build-type:         Simple
 executable turing
     main-is:            Main.hs
     hs-source-dirs:     app, src
-    other-modules:      Types
+    other-modules:      Types, Turing, Checking
     build-depends:      base ^>=4.17.2.1,
                         bytestring,
                         aeson, 

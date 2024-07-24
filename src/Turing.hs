@@ -1,4 +1,8 @@
 module Turing where
+
+import Prelude hiding (read, lookup)
+import Data.Map (Map, lookup)
+
 import Types
 
 displayableBand :: String -> Char -> Int -> String
@@ -34,6 +38,18 @@ toIntDirection str
     | str == "RIGHT" = 1
     | str == "LEFT" = (-1)
     | otherwise = 0
+
+findTransition :: Map String [Transition] -> String -> Char -> (Int, Transition)
+findTransition transMap state c = do
+    case lookup state transMap of
+        Just transitions -> do
+            -- print transitions
+            let transFound = filter (\t -> head (read t) == c) transitions
+            case transFound of
+                [] -> (2, Transition "Err" "Err" "Err" "Err")
+                xs  | length xs > 1 -> (21, Transition "Err" "Err" "Err" "Err")
+                    | otherwise -> (0, head transFound)
+        Nothing -> (1, Transition "Err" "Err" "Err" "Err")
 
 proceed :: String -> String -> Int -> Config -> Int -> IO ()
 proceed band state idx config infiniteIdx = if state `elem` (finals config)
