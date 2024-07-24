@@ -23,6 +23,7 @@ printError band idx state transRes = do
     else if errNum == 2 then putStrLn "Transition not found for this state"
     else if errNum == 21 then putStrLn "More than one transition found for this step"
     else if errNum == 3 then putStrLn "Your program is going to the infinite space"
+    else if errNum == 4 then putStrLn "Your program tries to write before the start of the band"
     else putStrLn "Unknown error"
 
 printCurrent :: String -> Int -> String -> Transition -> IO ()
@@ -60,7 +61,9 @@ proceed band state idx config infiniteIdx = if state `elem` (finals config)
         else do
             let trans = snd transResult
             if idx == infiniteIdx && (read trans) == (blank config) && (to_state trans) == state && (action trans) == "RIGHT"
-            then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (3, trans)
-            else do
-                printCurrent (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state trans
-                proceed (applyModify band idx (write trans)) (to_state trans) (idx + (toIntDirection(action trans))) config (max infiniteIdx (idx + (toIntDirection(action trans))))
+                then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (3, trans)
+                else if (idx + (toIntDirection (action trans))) < 0
+                    then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (4, trans)
+                    else do
+                        printCurrent (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state trans
+                        proceed (applyModify band idx (write trans)) (to_state trans) (idx + (toIntDirection(action trans))) config (max infiniteIdx (idx + (toIntDirection(action trans))))
