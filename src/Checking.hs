@@ -56,15 +56,16 @@ checkInput config input = do
         else putStrLn errorMsg >> exitSuccess
 
 checkJson :: Value -> Maybe Config
-checkJson json@(Object content) = do
-    let extraKeys = filter (`notElem` expectedKeys) (map toString (KM.keys content))
-    -- print extraKeys
-    if null extraKeys
-        then case fromJSON json of
-            Success config -> Just config
-            Error _        -> Nothing
-        else Nothing
-    where expectedKeys = ["name", "alphabet", "blank", "states", "initial", "finals", "transitions"]
+checkJson json = case json of
+    Object content -> do
+        let extraKeys = filter (`notElem` expectedKeys) (map toString (KM.keys content))
+        if null extraKeys
+            then case fromJSON json of
+                Success config -> Just config
+                Error _        -> Nothing
+            else Nothing
+        where expectedKeys = ["name", "alphabet", "blank", "states", "initial", "finals", "transitions"]
+    _              -> Nothing
 -- fromJSON retrun a Result a, Result can be Success or Error String
 
 getJson :: String -> IO (Maybe Value)

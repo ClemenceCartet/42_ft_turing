@@ -16,14 +16,15 @@ displayableResult band blank = if (length band) == 0 || (last band) /= blank the
 
 printError :: String -> Int -> String -> (Int, Transition) -> IO ()
 printError band idx state transRes = do
-    let errNum = fst transRes
     printCurrent band idx state $ snd transRes
-    if errNum == 1 then putStrLn "State name not found in transitions"
-    else if errNum == 11 then putStrLn "State name occurence more than once"
-    else if errNum == 2 then putStrLn "Transition not found for this state"
-    else if errNum == 21 then putStrLn "More than one transition found for this step"
-    else if errNum == 3 then putStrLn "Your program is going to the infinite space"
-    else putStrLn "Unknown error"
+    putStrLn errMsg
+    where errMsg
+            | errNum == 1 = "State name not found in transitions."
+            | errNum == 2 = "Transition not found for this state."
+            | errNum == 21 = "More than one transition found for this step."
+            | errNum == 3 = "Your program is going to the infinite space."
+            | otherwise = "Unknown error."
+            where errNum = fst transRes
 
 printCurrent :: String -> Int -> String -> Transition -> IO ()
 printCurrent band idx state trans = do
