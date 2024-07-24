@@ -1,5 +1,5 @@
 module Turing where
-import TuringDataTypes
+import Types
 
 displayableBand :: String -> Char -> Int -> String
 displayableBand band blank idx = if idx == ((length band) - 1) || (last band) /= blank
@@ -24,27 +24,27 @@ printError band idx state transRes = do
 printCurrent :: String -> Int -> String -> Transition -> IO ()
 printCurrent band idx state trans = do
     let splitted = splitAt idx band
-    putStrLn ("[" ++ fst splitted ++ "<" ++ [head (snd splitted)] ++ ">" ++ (tail (snd splitted)) ++ "]" ++ " (" ++ state ++ ", " ++ [head (snd splitted)] ++ ") -> (" ++ (nextState trans) ++ ", " ++ [(replaceChar trans)] ++ ", " ++ (toStringDirection (nextDir trans)) ++ ")")
+    putStrLn ("[" ++ fst splitted ++ "<" ++ [head (snd splitted)] ++ ">" ++ (tail (snd splitted)) ++ "]" ++ " (" ++ state ++ ", " ++ [head (snd splitted)] ++ ") -> (" ++ (to_state trans) ++ ", " ++ (write trans) ++ ", " ++ (action trans) ++ ")")
 
-applyModify :: String -> Int -> Char -> String
-applyModify band idx newChar = (take idx band) ++ [newChar] ++ (drop (idx + 1) band)
+applyModify :: String -> Int -> String -> String
+applyModify band idx newChar = (take idx band) ++ newChar ++ (drop (idx + 1) band)
 
-toStringDirection :: Int -> String
-toStringDirection x
-    | x == 1 = "RIGHT"
-    | x == (-1) = "LEFT"
-    | otherwise = "Error"
+toIntDirection :: String -> Int
+toIntDirection str
+    | str == "RIGHT" = 1
+    | str == "LEFT" = (-1)
+    | otherwise = 0
 
-proceed :: String -> Int -> Char -> String -> [TransitionMapping] -> [String] -> Int -> IO ()
-proceed band idx blank state transitions finals infiniteIdx = if state `elem` finals
-    then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) blank ++ "]")
+proceed :: String -> String -> Int -> Config -> Int -> IO ()
+proceed band state idx config infiniteIdx = if state `elem` (finals config)
+    then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
     else do
-        let transResult = findTransition transitions state (band !! idx)
-        if fst transResult /= 0 then printError (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state transResult
+        let transResult = findTransition (transitions config) state (band !! idx)
+        if fst transResult /= 0 then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state transResult
         else do
             let trans = snd transResult
-            if idx == infiniteIdx && (charRead trans) == blank && (nextState trans) == state && (nextDir trans) == 1
-            then printError (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state (3, trans)
+            if idx == infiniteIdx && (read trans) == (blank config) && (to_state trans) == state && (action trans) == "RIGHT"
+            then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (3, trans)
             else do
-                printCurrent (displayableBand (take (infiniteIdx + 1) band) blank idx) idx state trans
-                proceed (applyModify band idx $ replaceChar trans) (idx + (nextDir trans)) blank (nextState trans) transitions finals (max infiniteIdx (idx + (nextDir trans)))
+                printCurrent (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state trans
+                proceed (applyModify band idx (write trans)) (to_state trans) (idx + (toIntDirection(action trans))) config (max infiniteIdx (idx + (toIntDirection(action trans))))

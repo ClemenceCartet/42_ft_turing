@@ -1,13 +1,10 @@
-<<<<<<< HEAD
 .DS_Store
 dist-newstyle
 tests
 *.cabal
 test.hs
 turing.cabal
-=======
 *.hi
 *.o
 Main
 dist-newstyle/
->>>>>>> haskell
