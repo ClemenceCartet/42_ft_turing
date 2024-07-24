@@ -7,8 +7,12 @@
         "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
         "Y", "Z", ".", "=", "+", "-", " ", ";", ":", "*", "!", "?", "{", "}", "_"
     ],
-    "blank": ".",
-    "states": [ "gotoI", "gotoS", "takeInit", "memoa", "memob", "memoc", "backtoT", "write1to+", "write.to=", "write.to1", "end" ],
+    "blank": " ",
+    "states": [
+        "gotoI", "gotoS", "takeNext", "takeInit",
+        "starFor1R", "starFor1L", "starFor.R", "starFor.L",
+        "memoa", "memob", "memoc",
+        "backtoT", "write.to1", "end" ],
     "initial": "gotoS",
     "finals": ["end"],
     "transitions" : {
@@ -70,7 +74,25 @@
             { "read" : "R", "to_state": "memoc", "write": "R", "action": "RIGHT"},
             { "read" : "L", "to_state": "memoc", "write": "L", "action": "RIGHT"}
         ],
-        ""
+        "gotoI": [
+            { "read" : "I", "to_state": "takeNext", "write": "i", "action": "RIGHT"},
+            { "read" : "i", "to_state": "findStar", "write": "i", "action": "RIGHT"},
+            { "read" : "a", "to_state": "gotoI", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "gotoI", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "gotoI", "write": "c", "action": "RIGHT"},
+            { "read" : "1", "to_state": "gotoI", "write": "1", "action": "RIGHT"},
+            { "read" : "+", "to_state": "gotoI", "write": "+", "action": "RIGHT"},
+            { "read" : "=", "to_state": "gotoI", "write": "=", "action": "RIGHT"},
+            { "read" : ".", "to_state": "gotoI", "write": ".", "action": "RIGHT"},
+            { "read" : "_", "to_state": "gotoI", "write": "_", "action": "RIGHT"}
+        ],
+        "gotoNextI": [
+            { "read" : "I", "to_state": "takeNext", "write": "i", "action": "RIGHT"},
+            { "read" : "a", "to_state": "gotoNextI", "write": "a", "action": "RIGHT"},
+            { "read" : "b", "to_state": "gotoNextI", "write": "b", "action": "RIGHT"},
+            { "read" : "c", "to_state": "gotoNextI", "write": "c", "action": "RIGHT"},
+            { "read" : "_", "to_state": "gotoNextI", "write": "_", "action": "RIGHT"}
+        ]
     },
     "input": "A1.+=SabcT;a,1a1R,+a1R,=b.L;b,1c.R__I111+11="
 }

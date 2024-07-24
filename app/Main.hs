@@ -48,7 +48,7 @@ checkInput config input
     | null input = putStrLn "Input is empty."
     | head (blank config) `elem` input = putStrLn "Input shouldn't contain blank char."
     | not (all (`elem` concat (alphabet config)) input) = putStrLn "Input characters must be in alphabet."
-    | otherwise = return ()
+    | otherwise = print config
 
 checkJson :: Value -> Maybe Config
 checkJson json@(Object content) = do
