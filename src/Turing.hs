@@ -73,8 +73,8 @@ checkOutOfBand config trans band state idx infiniteIdx nextIdx
         = printError band idx state (3, trans) >> exitSuccess
     | otherwise = return ()
 
-proceed :: String -> String -> Int -> Config -> Int -> IO ()
-proceed band state idx config infiniteIdx = if state `elem` (finals config)
+proceed :: String -> String -> Int -> Config -> Int -> Int -> Int -> IO ()
+proceed band state idx config infiniteIdx initSize stepCount = if state `elem` (finals config)
     then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
     else do
         let transResult = findTransition (transitions config) state (band !! idx)
@@ -87,4 +87,4 @@ proceed band state idx config infiniteIdx = if state `elem` (finals config)
             let newBand = applyModify band idx $ write trans
             let newInfIdx = max infiniteIdx nextIdx
             printCurrent bandToDisplay idx state trans
-            proceed newBand (to_state trans) nextIdx config newInfIdx
+            proceed newBand (to_state trans) nextIdx config newInfIdx initSize (stepCount + 1)

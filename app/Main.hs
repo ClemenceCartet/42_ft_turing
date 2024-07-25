@@ -25,4 +25,4 @@ main = do
                     displayConfig config 40
                     let infiniteIdx = length input
                     let infiniteBand = input ++ [head (blank config), head (blank config)..]
-                    proceed infiniteBand (initial config) 0 config infiniteIdx
+                    proceed infiniteBand (initial config) 0 config infiniteIdx infiniteIdx 0
