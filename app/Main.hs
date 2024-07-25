@@ -8,6 +8,7 @@ import Data.Aeson
 import Checking
 import Turing
 import Types
+import DisplayConfig
 
 run :: Maybe Value -> String -> IO ()
 run Nothing _ = putStrLn "Failed to parse json."
