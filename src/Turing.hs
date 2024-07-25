@@ -3,6 +3,7 @@ module Turing where
 import Prelude hiding (read, lookup)
 import Data.Map (Map, lookup)
 import System.Exit (exitSuccess)
+import Control.Exception
 
 import Types
 
@@ -78,6 +79,11 @@ proceed band state idx config infiniteIdx initSize stepCount = if state `elem` (
     then do
         putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
         putStrLn ("original input length: " ++ (show initSize) ++ " | Steps: " ++ (show stepCount))
+        let s = show initSize ++ "," ++ show stepCount ++ "\n"
+        result <- try (appendFile "timeCompl.csv" s) :: IO (Either SomeException ())
+        case result of
+            Left err -> putStrLn (show err)
+            Right _ -> return ()
     else do
         let transResult = findTransition (transitions config) state (band !! idx)
         let bandToDisplay = displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx
