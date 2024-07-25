@@ -2,10 +2,28 @@ module Main where
 
 import System.IO
 import System.Environment (getArgs)
+import Control.Exception
+import Data.Aeson
 
 import Checking
 import Turing
 import Types
+
+run :: Maybe Value -> String -> IO ()
+run Nothing _ = putStrLn "Failed to parse json."
+run (Just content) input =
+    case checkJson content of
+        Nothing -> putStrLn "Your jsonfile is uncorrect."
+        Just config ->
+            checkConfig config >> checkInput config input >> do
+            let infiniteIdx = length input
+            let infiniteBand = input ++ [head (blank config), head (blank config)]
+            proceed infiniteBand (initial config) 0 config infiniteIdx
+            let blop = show 5 ++ "," ++ show 10 ++ "\n"
+            result <- try (appendFile "timeCompl.csv" blop) :: IO (Either SomeException ())
+            case result of
+                Left err -> putStrLn (show err)
+                Right _ -> return ()
 
 main :: IO ()
 main = do
@@ -15,12 +33,5 @@ main = do
         input = args !! 1
     jsonContent <- getJson jsonFile
     case jsonContent of
-        Nothing -> putStrLn "Failed to parse json."
-        Just content ->
-            case checkJson content of
-                Nothing -> putStrLn "Your jsonfile is uncorrect."
-                Just config ->
-                    checkConfig config >> checkInput config input >> do
-                    let infiniteIdx = length input
-                    let infiniteBand = input ++ [head (blank config), head (blank config)]
-                    proceed infiniteBand (initial config) 0 config infiniteIdx
+        Left err -> putStrLn err
+        Right maybeContent -> run maybeContent input

@@ -9,6 +9,7 @@ import Prelude hiding (read, lookup)
 import System.IO
 import System.Exit (exitSuccess)
 import System.Environment (getProgName)
+import Control.Exception
 import qualified Data.ByteString.Lazy as BL
 import Data.Aeson
 import qualified Data.Aeson.KeyMap as KM
@@ -68,10 +69,12 @@ checkJson json = case json of
     _              -> Nothing
 -- fromJSON retrun a Result a, Result can be Success or Error String
 
-getJson :: String -> IO (Maybe Value)
+getJson :: String -> IO (Either String (Maybe Value))
 getJson fileName = do
-    content <- BL.readFile fileName
-    return (decode content)
+    either <- try (BL.readFile fileName)
+    case either of
+        Left  er   -> return $ Left (show (er :: IOException))
+        Right content -> return $ Right (decode content)
 -- the Value type, which is an instance of FromJSON, is used to represent
 -- an arbitrary JSON AST (abstract syntax tree)
 
