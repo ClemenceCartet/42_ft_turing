@@ -18,8 +18,8 @@ run (Just content) input =
         Just config ->
             checkConfig config >> checkInput config input >> do
             let infiniteIdx = length input
-            let infiniteBand = input ++ [head (blank config), head (blank config)]
-            proceed infiniteBand (initial config) 0 config infiniteIdx
+            let infiniteBand = input ++ [head (blank config), head (blank config)..]
+            proceed infiniteBand (initial config) 0 config infiniteIdx infiniteIdx 0
             let blop = show 5 ++ "," ++ show 10 ++ "\n"
             result <- try (appendFile "timeCompl.csv" blop) :: IO (Either SomeException ())
             case result of
