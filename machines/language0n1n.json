@@ -2,7 +2,7 @@
     "name" : "language0n1n",
     "alphabet": [ "1", "0", ".", "a", "b", "n", "y"],
     "blank" : ".",
-    "states" : [ "scanright", "skip", "rewind", "check", "no" ],
+    "states" : [ "scanright", "skip", "rewind", "check", "no", "HALT" ],
     "initial" : "scanright",
     "finals" : [ "HALT" ],
 
