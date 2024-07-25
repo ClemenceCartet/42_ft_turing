@@ -19,6 +19,7 @@ run (Just content) input =
             checkConfig config >> checkInput config input >> do
             let infiniteIdx = length input
             let infiniteBand = input ++ [head (blank config), head (blank config)..]
+            displayConfig config 40
             proceed infiniteBand (initial config) 0 config infiniteIdx infiniteIdx 0
             let blop = show 5 ++ "," ++ show 10 ++ "\n"
             result <- try (appendFile "timeCompl.csv" blop) :: IO (Either SomeException ())
