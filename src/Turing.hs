@@ -75,7 +75,9 @@ checkOutOfBand config trans band state idx infiniteIdx nextIdx
 
 proceed :: String -> String -> Int -> Config -> Int -> Int -> Int -> IO ()
 proceed band state idx config infiniteIdx initSize stepCount = if state `elem` (finals config)
-    then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
+    then do
+        putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
+        putStrLn ("original input length: " ++ (show initSize) ++ " | Steps: " ++ (show stepCount))
     else do
         let transResult = findTransition (transitions config) state (band !! idx)
         let bandToDisplay = displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx
