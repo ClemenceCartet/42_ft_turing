@@ -2,16 +2,20 @@ module Turing where
 
 import Prelude hiding (read, lookup)
 import Data.Map (Map, lookup)
+import System.Exit (exitSuccess)
 
 import Types
 
 displayableBand :: String -> Char -> Int -> String
-displayableBand band blank idx = if idx == ((length band) - 1) || (last band) /= blank
+displayableBand band blank idx =
+    if idx == ((length band) - 1) || (last band) /= blank
     then band ++ [blank, blank]
     else displayableBand (init band) blank idx
 
 displayableResult :: String -> Char -> String
-displayableResult band blank = if (length band) == 0 || (last band) /= blank then band ++ [blank, blank]
+displayableResult band blank =
+    if (length band) == 0 || (last band) /= blank
+    then band ++ [blank, blank]
     else displayableResult (init band) blank
 
 printError :: String -> Int -> String -> (Int, Transition) -> IO ()
@@ -30,7 +34,13 @@ printError band idx state transRes = do
 printCurrent :: String -> Int -> String -> Transition -> IO ()
 printCurrent band idx state trans = do
     let splitted = splitAt idx band
-    putStrLn ("[" ++ fst splitted ++ "<" ++ [head (snd splitted)] ++ ">" ++ (tail (snd splitted)) ++ "]" ++ " (" ++ state ++ ", " ++ [head (snd splitted)] ++ ") -> (" ++ (to_state trans) ++ ", " ++ (write trans) ++ ", " ++ (action trans) ++ ")")
+    putStrLn ("[" ++ fst splitted
+        ++ "<" ++ [head (snd splitted)] ++ ">"
+        ++ (tail (snd splitted)) ++ "]"
+        ++ " (" ++ state ++ ", " ++ [head (snd splitted)]
+        ++ ") -> (" ++ (to_state trans)
+        ++ ", " ++ (write trans)
+        ++ ", " ++ (action trans) ++ ")")
 
 applyModify :: String -> Int -> String -> String
 applyModify band idx newChar = (take idx band) ++ newChar ++ (drop (idx + 1) band)
@@ -53,18 +63,28 @@ findTransition transMap state c = do
                     | otherwise -> (0, head transFound)
         Nothing -> (1, Transition "Err" "Err" "Err" "Err")
 
+checkOutOfBand :: Config -> Transition -> String -> String -> Int -> Int -> Int -> IO ()
+checkOutOfBand config trans band state idx infiniteIdx nextIdx
+    | nextIdx < 0 = printError band idx state (4, trans) >> exitSuccess
+    | idx == infiniteIdx
+        && (read trans) == (blank config)
+        && (to_state trans) == state
+        && (action trans) == "RIGHT"
+        = printError band idx state (3, trans) >> exitSuccess
+    | otherwise = return ()
+
 proceed :: String -> String -> Int -> Config -> Int -> IO ()
 proceed band state idx config infiniteIdx = if state `elem` (finals config)
     then putStrLn ("[" ++ displayableResult (take (infiniteIdx + 1) band) (head (blank config)) ++ "]")
     else do
         let transResult = findTransition (transitions config) state (band !! idx)
-        if fst transResult /= 0 then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state transResult
+        let bandToDisplay = displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx
+        if fst transResult /= 0 then printError bandToDisplay idx state transResult
         else do
             let trans = snd transResult
-            if idx == infiniteIdx && (read trans) == (blank config) && (to_state trans) == state && (action trans) == "RIGHT"
-                then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (3, trans)
-                else if (idx + (toIntDirection (action trans))) < 0
-                    then printError (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state (4, trans)
-                    else do
-                        printCurrent (displayableBand (take (infiniteIdx + 1) band) (head (blank config)) idx) idx state trans
-                        proceed (applyModify band idx (write trans)) (to_state trans) (idx + (toIntDirection(action trans))) config (max infiniteIdx (idx + (toIntDirection(action trans))))
+            let nextIdx = idx + toIntDirection(action trans)
+            checkOutOfBand config trans bandToDisplay state idx infiniteIdx nextIdx
+            let newBand = applyModify band idx $ write trans
+            let newInfIdx = max infiniteIdx nextIdx
+            printCurrent bandToDisplay idx state trans
+            proceed newBand (to_state trans) nextIdx config newInfIdx
