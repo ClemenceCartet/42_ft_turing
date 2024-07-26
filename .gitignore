@@ -2,3 +2,6 @@
 dist-newstyle
 *.cabal
 test.hs
+.venv
+timeCompl.csv
+graph.png

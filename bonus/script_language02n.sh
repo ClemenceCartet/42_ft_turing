@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "" > timeCompl.csv
+echo -n "" > timeCompl.csv
 cabal run exes -- machines/language02n.json 0 >> /dev/null
 cabal run exes -- machines/language02n.json 00 >> /dev/null
 cabal run exes -- machines/language02n.json 000 >> /dev/null

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "" > timeCompl.csv
+echo -n "" > timeCompl.csv
 cabal run exes -- machines/unary_add.json 1+1= >> /dev/null
 cabal run exes -- machines/unary_add.json 11+11= >> /dev/null
 cabal run exes -- machines/unary_add.json 1111+1111= >> /dev/null
