@@ -1,0 +1,9 @@
+services:
+  haskell:
+    build: .
+    image: haskell_img
+    container_name: haskell
+    volumes:
+      - "./:/dev/turing/"
+    stdin_open: true
+    tty: true

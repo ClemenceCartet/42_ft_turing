@@ -1,6 +1,5 @@
 .DS_Store
 dist-newstyle
-*.cabal
 test.hs
 .venv
 timeCompl.csv

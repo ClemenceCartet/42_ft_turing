@@ -1,16 +1,29 @@
 cabal-version:      3.0
 name:               turing
 version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            GPL-3.0-or-later
+license-file:       LICENSE
+author:             pouic
+maintainer:         lol.fr
+-- copyright:
 build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
 
 executable turing
-    main-is:            Main.hs
-    hs-source-dirs:     app, src
-    other-modules:      Types, Turing, Checking, DisplayConfig
-    build-depends:      base ^>=4.17.2.1,
-                        bytestring,
-                        aeson, 
-                        containers,
-						unordered-containers,
-						text
-    default-language:   Haskell2010
+    import:           warnings
+    main-is:          Main.hs
+    other-modules:    Turing, Types, DisplayConfig, Checking
+    -- other-extensions:
+    build-depends:    base,
+                      aeson,
+                      bytestring,
+                      containers,
+                      text
+    hs-source-dirs:   app, src
+    default-language: Haskell2010
